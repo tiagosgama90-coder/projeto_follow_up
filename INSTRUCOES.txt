@@ -1,0 +1,91 @@
+================================================================================
+  SORETRAC FOLLOW-UP COMERCIAL v2.0 — INSTRUÇÕES
+================================================================================
+
+LOCALIZAÇÃO DOS FICHEIROS:
+  C:\Users\tecnico\SoretracFollowUp\build_output\
+
+  • SoretracAdmin.exe          → Para SI (administrador)
+  • SoretracFollowUp_*.exe     → Para funcionários (com dados embutidos)
+
+
+================================================================================
+  FLUXO DO ADMINISTRADOR
+================================================================================
+
+1. Abra SoretracAdmin.exe
+
+2. No painel inferior "Painel Administrador", importe os seus CSVs:
+   - Importar CSV (Clientes)  → ficheiro com dados de clientes
+   - Importar CSV (Vendas)    → ficheiro com histórico de vendas
+   - Importar CSV (Emails)    → ficheiro com emails enviados
+   - Auto-detectar CSV        → deteta automaticamente o tipo
+
+3. Verifique os dados nas tabs Clientes / Vendas / Emails
+
+4. Clique em "Gerar Executável p/ Funcionários"
+   → Cria um novo .exe em build_output\ com TODA a base de dados embutida
+
+5. Envie esse .exe aos funcionários (email, pen, rede interna, etc.)
+
+
+================================================================================
+  FLUXO DO FUNCIONÁRIO
+================================================================================
+
+1. Recebe o ficheiro SoretracFollowUp_YYYYMMDD_HHMM.exe
+2. Abre directamente — NÃO precisa de importar CSV
+3. Usa filtros, segmentação, exportação, emails com IA, etc.
+
+
+================================================================================
+  PASSWORD ADMIN
+================================================================================
+
+  soretrac2026
+
+  (Para alterar: editar app\config.py antes de recompilar)
+
+
+================================================================================
+  FILTROS DISPONÍVEIS
+================================================================================
+
+  Básicos:  Cliente, Comercial, Produto, Distrito, Datas
+  Segmentos: <30d, 30-60d, 60-90d, 90-180d, 180-365d, >365d
+  Avançados: >, <, >=, <=, entre, contém, igual, começa com, etc.
+  Lógica:    AND / OR entre múltiplas regras
+
+
+================================================================================
+  FUNCIONALIDADES IA
+================================================================================
+
+  • Análise automática da carteira de clientes
+  • Sugestão de emails (seguimento, proposta, reativação, cross-selling)
+  • Identificação de clientes em risco de churn
+  • Recomendações de acções comerciais
+
+
+================================================================================
+  FORMATO CSV
+================================================================================
+
+  Separador: ponto e vírgula (;)
+  Encoding: UTF-8
+  Colunas clientes: cliente_codigo, cliente_nome, comercial, CIF,
+    email_factura, cidade_factura, provincia_factura, telefone_factura,
+    data_ultima_compra, dias_desde_ultima_compra, produto_ultima, distrito
+
+  Exemplos em: sample_data\
+
+
+================================================================================
+  NOTA IMPORTANTE
+================================================================================
+
+  Para gerar executáveis de funcionários a partir do SoretracAdmin.exe,
+  é necessário ter Python 3 instalado no PC do administrador.
+  Alternativa: executar "python main.py" directamente (modo desenvolvimento).
+
+================================================================================

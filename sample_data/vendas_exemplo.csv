@@ -1,0 +1,8 @@
+cliente_codigo;cliente_nome;comercial;produto;quantidade;valor;data_venda;distrito;categoria;status
+C001;Auto Reparacoes Silva Lda;Joao Santos;Filtros Oleo;50;1250.00;2026-05-15;Lisboa;Filtros;Concluida
+C002;Mecanica Central SA;Maria Costa;Pastilhas Travão;30;2100.00;2026-03-20;Porto;Travões;Concluida
+C003;Pecas Auto Norte;Pedro Alves;Amortecedores;12;3600.00;2025-12-10;Braga;Suspensão;Concluida
+C005;Auto Service Plus;Joao Santos;Velas Ignicao;100;800.00;2026-06-01;Setubal;Ignição;Concluida
+C009;Oficina Moderna;Joao Santos;Oleo Motor;200;3000.00;2026-04-05;Leiria;Lubrificantes;Concluida
+C013;Garagem Central;Joao Santos;Filtros Combustivel;40;960.00;2026-06-10;Porto;Filtros;Concluida
+C015;Mecanica do Bairro;Pedro Alves;Lampadas;25;375.00;2026-05-28;Lisboa;Iluminação;Concluida

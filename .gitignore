@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+build_temp/
+bundle_data/
+*.spec
+.env
+.netlify/
+data/
+build_output/*.exe
+build_output/*.zip
+build_output/Pacote_*/
+build_output/data/

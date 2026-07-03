@@ -1,0 +1,16 @@
+cliente_codigo;cliente_nome;comercial;CIF;email_factura;cidade_factura;provincia_factura;telefone_factura;data_ultima_compra;dias_desde_ultima_compra;produto_ultima;distrito
+C001;Auto Reparacoes Silva Lda;Joao Santos;501234567;joao.silva@email.pt;Lisboa;Lisboa;213456789;2026-05-15;19;Filtros Oleo;Lisboa
+C002;Mecanica Central SA;Maria Costa;502345678;maria@central.pt;Porto;Porto;225678901;2026-03-20;75;Pastilhas Travão;Porto
+C003;Pecas Auto Norte;Pedro Alves;503456789;pedro@norte.pt;Braga;Braga;253789012;2025-12-10;175;Amortecedores;Braga
+C004;Garagem do Mar;Ana Ferreira;504567890;ana@mar.pt;Faro;Faro;289890123;2025-06-01;367;Correias;Faro
+C005;Auto Service Plus;Joao Santos;505678901;service@plus.pt;Setubal;Setubal;265901234;2026-06-01;2;Velas Ignicao;Setubal
+C006;Mecanica Rapida;Maria Costa;506789012;rapida@email.pt;Coimbra;Coimbra;239012345;2025-09-15;291;Discos Travão;Coimbra
+C007;Pecas e Acessorios Lda;Pedro Alves;507890123;pecas@acessorios.pt;Aveiro;Aveiro;234123456;2026-01-20;134;Filtros Ar;Aveiro
+C008;Auto Pecas Sul;Ana Ferreira;508901234;sul@autopecas.pt;Evora;Evora;266234567;2025-03-10;480;Embraiagens;Evora
+C009;Oficina Moderna;Joao Santos;509012345;moderna@oficina.pt;Leiria;Leiria;244345678;2026-04-05;59;Oleo Motor;Leiria
+C010;Central Auto Pecas;Maria Costa;500123456;central@auto.pt;Santarem;Santarem;243456789;2025-11-22;193;Baterias;Santarem
+C011;Auto Mecanica Este;Pedro Alves;501234568;este@mecanica.pt;Viseu;Viseu;232567890;2026-02-14;109;Radiadores;Viseu
+C012;Pecas Auto Oeste;Ana Ferreira;502345679;oeste@pecas.pt;Caldas da Rainha;Leiria;262678901;2025-08-30;307;Escovas Limpa;Leiria
+C013;Garagem Central;Joao Santos;503456780;garagem@central.pt;Vila Nova de Gaia;Porto;226789012;2026-06-10;0;Filtros Combustivel;Porto
+C014;Auto Reparacoes Norte;Maria Costa;504567891;norte@reparacoes.pt;Guimaraes;Braga;253890123;2025-10-05;241;Juntas Motor;Braga
+C015;Mecanica do Bairro;Pedro Alves;505678902;bairro@mecanica.pt;Amadora;Lisboa;214901234;2026-05-28;6;Lampadas;Lisboa
