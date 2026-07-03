@@ -6,6 +6,8 @@ from tkinter import ttk
 import threading
 import webbrowser
 import re
+import shutil
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -343,7 +345,7 @@ class SoretracApp(ctk.CTk):
         ctk.CTkLabel(panel, text="CSV | Excel | SQL | SQLite — deteta automaticamente",
                      font=ctk.CTkFont(size=FONT_SMALL), text_color=COLORS["text_muted"]).pack(side="left", padx=4)
 
-        ctk.CTkButton(panel, text="Gerar Executavel p/ Funcionarios", width=280, height=42,
+        ctk.CTkButton(panel, text="GERAR 1 FICHEIRO PARA FUNCIONARIOS", width=320, height=44,
                       font=ctk.CTkFont(size=FONT_BUTTON, weight="bold"),
                       command=self._export_package, fg_color=COLORS["danger"]).pack(side="right", padx=16, pady=10)
 
@@ -886,11 +888,13 @@ class SoretracApp(ctk.CTk):
             messagebox.showwarning("Aviso", "Importe a base de dados primeiro.")
             return
         if not messagebox.askyesno(
-            "Gerar Executavel",
-            "Vai ser criado UM UNICO ficheiro .exe\n"
-            "com todos os dados embutidos.\n\n"
-            "Envie apenas esse ficheiro aos funcionarios.\n\n"
-            "Continuar? (pode demorar alguns minutos)",
+            "Gerar ficheiro unico",
+            "Vai ser criado UM UNICO ficheiro:\n\n"
+            "   Soretrac_Funcionarios.exe\n\n"
+            "Com TODOS os dados la dentro.\n"
+            "E o UNICO ficheiro que envia aos funcionarios.\n"
+            "Eles fazem duplo-clique e ja funciona.\n\n"
+            "Continuar? (demora 2-5 minutos)",
         ):
             return
 
@@ -914,12 +918,36 @@ class SoretracApp(ctk.CTk):
         win.destroy()
         if err:
             messagebox.showerror("Erro", err)
+            return
+        # Copiar automaticamente para pasta de envio no Ambiente de Trabalho
+        desktop_dest = Path.home() / "Desktop" / "Soretrac" / "2-ENVIAR-FUNCIONARIOS"
+        if desktop_dest.parent.exists():
+            desktop_dest.mkdir(parents=True, exist_ok=True)
+            for old in desktop_dest.glob("*"):
+                if old.suffix.lower() in (".db", ".zip") or old.name in (
+                    "SoretracFollowUp.exe", "SoretracDados.db"
+                ):
+                    try:
+                        old.unlink()
+                    except OSError:
+                        pass
+            final = desktop_dest / "Soretrac_Funcionarios.exe"
+            shutil.copy2(exe_path, final)
+            messagebox.showinfo(
+                "Ficheiro Unico Pronto",
+                f"PRONTO!\n\n"
+                f"Ficheiro: Soretrac_Funcionarios.exe\n"
+                f"Local: {desktop_dest}\n\n"
+                f"Envie APENAS este ficheiro aos funcionarios.\n"
+                f"Os dados ja vao DENTRO do executavel.\n"
+                f"Nao precisa de enviar mais nada.",
+            )
+            os.startfile(str(desktop_dest))
         else:
             messagebox.showinfo(
-                "Executavel Pronto",
+                "Ficheiro Unico Pronto",
                 f"Ficheiro criado:\n\n{exe_path}\n\n"
-                "Envie APENAS este .exe aos funcionarios.\n"
-                "Eles fazem duplo-clique e ja tem todos os dados.",
+                f"Envie APENAS este .exe aos funcionarios.",
             )
 
 
