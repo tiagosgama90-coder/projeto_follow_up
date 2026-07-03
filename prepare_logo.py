@@ -1,10 +1,10 @@
-"""Prepara logotipo Soretrac — branco sobre azul #005696."""
+"""Prepara logotipo Soretrac — recorta conteudo, mantem proporcao original."""
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 ASSETS = Path(__file__).parent / "assets"
 LOGO_SRC = ASSETS / "logo.png"
-SORETRAC_BLUE = (0, 86, 150, 255)  # #005696
+SORETRAC_BLUE = (0, 86, 150, 255)
 
 
 def _remove_dark_bg(img: Image.Image) -> Image.Image:
@@ -31,34 +31,41 @@ def _to_white(img: Image.Image) -> Image.Image:
     return img
 
 
-def _make_header() -> None:
-    src = _to_white(_remove_dark_bg(Image.open(LOGO_SRC)))
-    w, h = src.size
-    logo_h = 46
-    logo_w = int(logo_h * w / h)
-    resized = src.resize((logo_w, logo_h), Image.Resampling.LANCZOS)
-    canvas = Image.new("RGBA", (logo_w + 20, 54), SORETRAC_BLUE)
-    canvas.paste(resized, (10, 4), resized)
-    canvas.save(ASSETS / "logo_header.png", "PNG")
-    src.save(ASSETS / "logo_white.png", "PNG")
-    _remove_dark_bg(Image.open(LOGO_SRC)).save(ASSETS / "logo_transparent.png", "PNG")
+def _crop_content(img: Image.Image) -> Image.Image:
+    bbox = img.getbbox()
+    if bbox:
+        return img.crop(bbox)
+    return img
 
 
-def _make_icon() -> None:
-    src = _to_white(_remove_dark_bg(Image.open(LOGO_SRC)))
-    w, h = src.size
+def _make_assets() -> None:
+    raw = Image.open(LOGO_SRC)
+    transparent = _crop_content(_remove_dark_bg(raw))
+    white = _to_white(transparent)
+
+    transparent.save(ASSETS / "logo_transparent.png", "PNG")
+    white.save(ASSETS / "logo_white.png", "PNG")
+
+    # Header: logo horizontal com proporcao original (sem achatar)
+    w, h = white.size
+    logo_h = 48
+    logo_w = max(1, int(logo_h * w / h))
+    header_img = white.resize((logo_w, logo_h), Image.Resampling.LANCZOS)
+    header_img.save(ASSETS / "logo_header.png", "PNG")
+
+    # Icone quadrado
     size = 256
     canvas = Image.new("RGBA", (size, size), SORETRAC_BLUE)
-    scale = min((size - 50) / w, (size - 50) / h)
+    scale = min((size - 48) / w, (size - 48) / h)
     nw, nh = int(w * scale), int(h * scale)
-    resized = src.resize((nw, nh), Image.Resampling.LANCZOS)
+    resized = white.resize((nw, nh), Image.Resampling.LANCZOS)
     canvas.paste(resized, ((size - nw) // 2, (size - nh) // 2), resized)
     canvas.save(ASSETS / "icon.ico", format="ICO", sizes=[(256, 256), (64, 64), (32, 32), (16, 16)])
+
+    print(f"Logo OK — proporcao {w}x{h} -> header {logo_w}x{logo_h}")
 
 
 if __name__ == "__main__":
     if not LOGO_SRC.exists():
         raise FileNotFoundError(f"Coloque logo.png em {ASSETS}")
-    _make_header()
-    _make_icon()
-    print("Logo Soretrac #005696 pronto.")
+    _make_assets()

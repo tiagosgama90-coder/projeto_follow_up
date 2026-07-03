@@ -63,8 +63,7 @@ class SoretracApp(ctk.CTk):
 
     def _build_ui(self):
         self.grid_columnconfigure(0, weight=1)
-        for r in (3, 5):
-            self.grid_rowconfigure(r, weight=1)
+        self.grid_rowconfigure(6, weight=1)  # so a tabela expande, nao as accoes
 
         self._build_header()
         self._build_search_bar()
@@ -78,7 +77,7 @@ class SoretracApp(ctk.CTk):
             self._build_admin_panel()
 
     def _build_header(self):
-        header = ctk.CTkFrame(self, fg_color=COLORS["header"], height=76, corner_radius=0)
+        header = ctk.CTkFrame(self, fg_color=COLORS["header"], height=80, corner_radius=0)
         header.grid(row=0, column=0, sticky="ew")
         header.grid_columnconfigure(1, weight=1)
         header.grid_propagate(False)
@@ -86,12 +85,13 @@ class SoretracApp(ctk.CTk):
         logo_path = get_logo_path()
         if logo_path.exists():
             try:
-                img = Image.open(logo_path)
-                ratio = img.width / max(img.height, 1)
-                logo_h, logo_w = 46, max(int(46 * ratio), 140)
+                img = Image.open(logo_path).convert("RGBA")
+                w, h = img.size
+                logo_h = 50
+                logo_w = int(logo_h * w / h)  # proporcao original — sem achatar
                 self.logo_img = ctk.CTkImage(img, size=(logo_w, logo_h))
-                ctk.CTkLabel(header, image=self.logo_img, text="").grid(
-                    row=0, column=0, padx=(18, 8), pady=12, sticky="w")
+                ctk.CTkLabel(header, image=self.logo_img, text="", width=logo_w + 10).grid(
+                    row=0, column=0, padx=(16, 10), pady=14, sticky="w")
             except Exception:
                 pass
 
@@ -236,49 +236,65 @@ class SoretracApp(ctk.CTk):
         self._on_segmento_change()
 
     def _build_actions(self):
-        frame = ctk.CTkFrame(self, fg_color=COLORS["bg_card"], corner_radius=10)
-        frame.grid(row=5, column=0, sticky="ew", padx=12, pady=4)
+        frame = ctk.CTkFrame(self, fg_color=COLORS["bg_card"], corner_radius=10, height=96)
+        frame.grid(row=5, column=0, sticky="ew", padx=12, pady=(4, 8))
+        frame.grid_propagate(False)
+        frame.grid_columnconfigure(0, weight=1)
 
-        ctk.CTkLabel(frame, text="Acoes", font=ctk.CTkFont(size=FONT_SMALL, weight="bold")).grid(
-            row=0, column=0, padx=12, pady=8, sticky="w")
+        top = ctk.CTkFrame(frame, fg_color="transparent")
+        top.pack(fill="x", padx=10, pady=(8, 4))
+        ctk.CTkLabel(top, text="Acoes rapidas", font=ctk.CTkFont(size=FONT_SMALL, weight="bold"),
+                     text_color="white").pack(side="left")
+
+        btn_row = ctk.CTkFrame(frame, fg_color="transparent")
+        btn_row.pack(fill="x", padx=8, pady=(0, 10))
 
         actions = [
             ("Copiar Emails", self._copy_email, COLORS["bg_card_light"]),
-            ("Email de Seguimento", lambda: self._email_action("seguimento"), COLORS["primary"]),
-            ("Email de Proposta", lambda: self._email_action("proposta"), COLORS["primary_light"]),
-            ("Email de Reativacao", lambda: self._email_action("reativacao"), COLORS["warning"]),
-            ("Analise Inteligente", self._show_ai_panel, COLORS["accent"]),
-            ("Exportar para Excel", self._export_excel, COLORS["success"]),
+            ("Email Seguimento", lambda: self._email_action("seguimento"), COLORS["primary"]),
+            ("Email Proposta", lambda: self._email_action("proposta"), COLORS["primary_light"]),
+            ("Email Reativacao", lambda: self._email_action("reativacao"), COLORS["warning"]),
+            ("Analise IA", self._show_ai_panel, COLORS["accent"]),
+            ("Exportar Excel", self._export_excel, COLORS["success"]),
         ]
         for i, (text, cmd, color) in enumerate(actions):
-            ctk.CTkButton(frame, text=text, width=130, height=34, command=cmd,
-                          font=ctk.CTkFont(size=12), fg_color=color).grid(
-                row=0, column=i + 1, padx=3, pady=8)
+            ctk.CTkButton(btn_row, text=text, width=125, height=36, command=cmd,
+                          font=ctk.CTkFont(size=11), fg_color=color).grid(
+                row=0, column=i, padx=4, pady=2, sticky="ew")
+            btn_row.grid_columnconfigure(i, weight=1)
 
     def _build_main_area(self):
         container = ctk.CTkFrame(self, fg_color="transparent")
-        container.grid(row=6, column=0, sticky="nsew", padx=12, pady=4)
+        container.grid(row=6, column=0, sticky="nsew", padx=12, pady=(0, 4))
         container.grid_columnconfigure(0, weight=1)
-        container.grid_rowconfigure(1, weight=1)
-        self.grid_rowconfigure(6, weight=1)
+        container.grid_rowconfigure(2, weight=1)
 
-        tabs = ctk.CTkFrame(container, fg_color="transparent")
+        tabs = ctk.CTkFrame(container, fg_color=COLORS["bg_card"], corner_radius=10, height=52)
         tabs.grid(row=0, column=0, sticky="ew", pady=(0, 6))
+        tabs.grid_propagate(False)
+
+        tab_inner = ctk.CTkFrame(tabs, fg_color="transparent")
+        tab_inner.pack(fill="both", expand=True, padx=8, pady=8)
+
         self.tab_buttons = {}
         for tab, label in [("clientes", "Clientes"), ("vendas", "Vendas"), ("emails", "Emails")]:
-            btn = ctk.CTkButton(tabs, text=label, width=150, height=38,
+            btn = ctk.CTkButton(tab_inner, text=label, width=140, height=36,
                                 font=ctk.CTkFont(size=FONT_BUTTON, weight="bold"),
                                 command=lambda t=tab: self._switch_tab(t),
                                 fg_color=COLORS["primary"] if tab == "clientes" else COLORS["bg_card_light"])
             btn.pack(side="left", padx=4)
             self.tab_buttons[tab] = btn
 
-        self.lbl_count = ctk.CTkLabel(tabs, text="", font=ctk.CTkFont(size=FONT_NORMAL),
+        self.lbl_count = ctk.CTkLabel(tab_inner, text="", font=ctk.CTkFont(size=FONT_SMALL),
                                        text_color=COLORS["text_muted"])
-        self.lbl_count.pack(side="right", padx=10)
+        self.lbl_count.pack(side="right", padx=8)
+
+        self.lbl_sort_hint = ctk.CTkLabel(container, text="Clique na coluna para ordenar  |  Duplo-clique para filtrar",
+                                           font=ctk.CTkFont(size=10), text_color=COLORS["text_muted"])
+        self.lbl_sort_hint.grid(row=1, column=0, sticky="w", pady=(0, 4))
 
         tf = ctk.CTkFrame(container, fg_color=COLORS["bg_card"], corner_radius=10)
-        tf.grid(row=1, column=0, sticky="nsew")
+        tf.grid(row=2, column=0, sticky="nsew")
         tf.grid_columnconfigure(0, weight=1)
         tf.grid_rowconfigure(0, weight=1)
 
@@ -302,9 +318,6 @@ class SoretracApp(ctk.CTk):
         hsb.grid(row=1, column=0, sticky="ew")
         self.tree.bind("<<TreeviewSelect>>", self._on_select)
         self.tree.bind("<Double-1>", self._on_tree_double_click)
-        self.lbl_sort_hint = ctk.CTkLabel(tabs, text="Clique coluna: ordenar | Duplo-clique coluna: filtrar",
-                                           font=ctk.CTkFont(size=10), text_color=COLORS["text_muted"])
-        self.lbl_sort_hint.pack(side="right", padx=8)
 
     def _build_statusbar(self):
         bar = ctk.CTkFrame(self, fg_color=COLORS["header"], height=32, corner_radius=0)

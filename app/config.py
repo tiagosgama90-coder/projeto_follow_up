@@ -4,13 +4,13 @@ import sys
 from pathlib import Path
 
 APP_NAME = "Follow-up Comercial - Soretrac Portuguesa"
-APP_VERSION = "3.0.0"
+APP_VERSION = "3.0.1"
 ADMIN_PASSWORD = "soretrac2026"
 COMPANY = "Soretrac Portuguesa"
 EMPLOYEE_EXE = "Soretrac_Funcionarios.exe"
 
 WINDOW_WIDTH = 1560
-WINDOW_HEIGHT = 920
+WINDOW_HEIGHT = 940
 
 FONT_TITLE = 20
 FONT_SUBTITLE = 14
@@ -83,7 +83,7 @@ def get_db_path() -> Path:
 
 
 def get_logo_path() -> Path:
-    for name in ("logo_header.png", "logo_white.png", "logo_transparent.png", "logo.png"):
+    for name in ("logo_header.png", "logo_white.png", "logo_transparent.png"):
         for base in (get_base_dir(), get_runtime_dir()):
             logo = base / "assets" / name
             if logo.exists():
