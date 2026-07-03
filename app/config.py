@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 APP_NAME = "Follow-up Comercial - Soretrac Portuguesa"
-APP_VERSION = "3.0.1"
+APP_VERSION = "3.0.2"
 ADMIN_PASSWORD = "soretrac2026"
 COMPANY = "Soretrac Portuguesa"
 EMPLOYEE_EXE = "Soretrac_Funcionarios.exe"

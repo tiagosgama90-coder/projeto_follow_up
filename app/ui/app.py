@@ -938,9 +938,9 @@ class SoretracApp(ctk.CTk):
                 f"PRONTO!\n\n"
                 f"Ficheiro: Soretrac_Funcionarios.exe\n"
                 f"Local: {desktop_dest}\n\n"
-                f"Envie APENAS este ficheiro aos funcionarios.\n"
-                f"Os dados ja vao DENTRO do executavel.\n"
-                f"Nao precisa de enviar mais nada.",
+                f"Envie este ficheiro aos funcionarios.\n"
+                f"Pode enviar diretamente ou dentro de um ZIP.\n"
+                f"Os dados ja vao DENTRO do executavel.",
             )
             os.startfile(str(desktop_dest))
         else:
